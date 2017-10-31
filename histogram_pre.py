@@ -5,15 +5,14 @@ import scipy.stats as stats
 from sklearn.preprocessing import normalize
 
 from vect_pre_post import (
-	vector_pre_L_L, vector_pre_L_R, vector_post_L_L,
-	vector_post_L_R, vector_pre_R_L, vector_pre_R_R,
-	vector_post_R_L, vector_post_R_R
+	vector_pre_L_L, vector_pre_L_R,
+	vector_pre_R_L, vector_pre_R_R,
 )
 
 """
 Creates histogram for pre and post intervention
-probabilitic tenor components between the left hippocampus
-and the PCC. 
+probabilitic tenor components between the hippocampus
+and the PCC during pre-intervention. 
 4 histograms in total.
 """
 
@@ -22,21 +21,21 @@ font = {'family' : 'normal',
 		'size' : 16}
 plt.rc('font', **font)
 
-left_vectors = [vector_pre_L_L, vector_pre_L_R, vector_post_L_L, vector_post_L_R]
-left_labels = ['pre L/L', 'pre L/R', 'post L/L', 'post L/R']
+pre_vectors = [vector_pre_L_L, vector_pre_L_R, vector_pre_R_L, vector_pre_R_R]
+pre_labels = ['pre L/L', 'pre L/R', 'pre R/L', 'pre R/R']
 plot_point = [[0,0], [0,1], [1,0], [1,1]]
 
 f, axarr = plt.subplots(2, 2)
 
-for i in range(len(left_vectors)):
+for i in range(len(pre_vectors)):
 	ax = axarr[plot_point[i][0], plot_point[i][1]]
 	tensor_component = []
 
-	for j in range(len(left_vectors[i])):
-		tensor_component.append(left_vectors[i][j])
+	for j in range(len(pre_vectors[i])):
+		tensor_component.append(pre_vectors[i][j])
 
 	# variables
-	left_label = left_labels[i]
+	pre_label = pre_labels[i]
 	(mean, std) = stats.norm.fit(tensor_component)
 	num_bins = 25
 
@@ -54,9 +53,9 @@ for i in range(len(left_vectors)):
 	# figure settings
 	ax.set_xlabel('Probablistic Tensor Value between HP and PCC')
 	ax.set_ylabel('Frequency')
-	ax.set_title(left_label)
+	ax.set_title(pre_label)
 
-f.text(.52, .01, 'Figure 1: Histograms of Left HP/PCC DTI Values', ha = 'center')
+f.text(.52, .01, 'Figure 1: Histograms of HP/PCC DTI Values for Pre-Intervention', ha = 'center')
 f.tight_layout()
 plt.show()
 
